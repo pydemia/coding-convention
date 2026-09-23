@@ -10,7 +10,7 @@ pydemia의 명시적 요청, 직접 관리한 코드·문서, Codex 설계 대�
 - [근거와 조사 범위](skills/pydemia-coding-style/references/evidence.md)
 - [충돌·선택 이유·미확정 항목](skills/pydemia-coding-style/references/decisions.md)
 - [편집 설정과 검증](docs/tooling.md)
-- [skills.pydemia.ai 편입 안내](docs/publication.md)
+- [skills.pydemia.ai 게시 정보](docs/publication.md)
 - [검증 기록](docs/validation.md)
 - [전수 목록·내용 검사 범위](docs/research-coverage.md)
 
@@ -43,5 +43,7 @@ uv run --python 3.13 scripts/validate.py
 uv run --python 3.13 examples/python_style.py
 ```
 
-이 저장소는 사전과 Skill의 원본이다. 다른 개인 저장소와 실제 웹사이트의
-설정·배포는 이 저장소 push만으로 변경되지 않는다.
+사전은 [skills.pydemia.ai](https://skills.pydemia.ai/skills/pydemia-coding-style)에
+게시했다. 사이트용 편집 원본과 후속 수정 경로는
+[게시 정보](docs/publication.md)를 따른다. 이 저장소 push만으로 사이트가
+자동 갱신되지는 않는다.
