@@ -2,8 +2,9 @@
 name: pydemia-coding-style
 description: >-
   Apply pydemia's coding conventions when creating, editing, or reviewing code
-  in their style. Use scoped Python formatting and design preferences while
-  preserving repository conventions.
+  in their style. Cover Python, YAML, Markdown, Java, and Kotlin with scoped
+  formatting, design, configuration, and review rules. Resolve conflicting
+  decisions by scope and recency while preserving repository conventions.
 ---
 
 # pydemia coding style
@@ -21,7 +22,10 @@ formatter와 공개 API를 Skill 적용만으로 바꾸지 않는다.
 - Python 작성·수정: [서식과 Python](references/python.md).
 - 구조·비동기·의존성 변경: [구조와 상태](references/design.md).
 - 문서·테스트·변경 범위 판단: [문서와 작업](references/workflow.md).
-- Python 이외의 파일: [언어별 적용 범위](references/languages.md).
+- YAML 설정·prompt: [YAML](references/yaml.md).
+- Markdown 작성·수정: [Markdown](references/markdown.md).
+- Java: [Java](references/java.md). Kotlin: [Kotlin](references/kotlin.md).
+- 그 밖의 언어: [언어별 적용 범위](references/languages.md).
 - 근거 또는 충돌 확인이 필요할 때만 [근거](references/evidence.md)와
   [결정 기록](references/decisions.md)을 읽는다.
 
@@ -35,8 +39,9 @@ mixin·깊은 상속과 불필요한 간접 호출을 피하고 값과 실행 �
 검증에는 Pydantic을 우선 검토하되 모든 내부 값에 의존성을 추가하지 않는다.
 오류·미확인·빈 값·실행 완료를 같은 값으로 합치지 않는다.
 
-`관측`은 강제 규칙이 아니며 `조건부`는 해당 조건에서만 적용한다. 과거
-assistant 제안을 사용자 확정으로 취급하지 않는다. 기존 파일 전체의
+`관측`은 강제 규칙이 아니며 `조건부`는 해당 조건에서만 적용한다. 같은 범위의
+충돌은 최신 명시적 결정을 우선한다. 반복 번복은 결정 기록에 따로 모은다.
+과거 assistant 제안을 사용자 확정으로 취급하지 않는다. 기존 파일 전체의
 재서식, 별도 framework·도구 도입, 공개 이름 변경으로 범위를 넓히지 않는다.
 
 변경한 동작에 맞는 검사를 실행한다. 규칙 충돌이 있었다면 적용한 기준과

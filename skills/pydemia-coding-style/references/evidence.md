@@ -6,30 +6,18 @@
 
 ## 방법과 한계
 
-GitHub API로 접근 가능한 pydemia 저장소 327개를 목록화했다. non-fork는
-156개였다. 이 수치는 접근 가능한 목록이며 비공개 저장소 전체 수가 아니다.
-로컬 git 폴더의 Git checkout 119개를 목록화했다. 중복 worktree, fork,
-공동 작업물이 포함되어 있어 저장소 개수나 commit 수를 개인 취향의 빈도로
-계산하지 않았다.
+최초 표본 조사를 확대했다. 인증된 pydemia 소유 저장소 410개 중 non-fork
+239개를 수집했고 로컬 Git root 154개와 Codex 기록 268개, 관련 memory를
+조사했다. 자세한 기준·제외·파일별 내용 검사와 수동 검토 범위는 저장소의
+`docs/research-coverage.md`에 기록했다. 독립 Skill에는 이 안내와 아래
+근거 문서가 포함된다.
 
-본문 표본은 공개 Python library, 최근 Python·TypeScript 프로젝트,
-로컬 개발 지침·설정과 직접 사용자 요청에서 골랐다. Git author와 GitHub
-login을 대조했지만 author가 같아도 수동 작성·agent 생성·외부 코드 이관을
-구분할 수는 없다. 특히 최근 코드는 사용자 감독하의 작업 근거이며 모든
-행을 사용자가 직접 입력했다는 주장은 하지 않는다. 공동 저장소의 타인 작성
-파일, scaffolding, 생성 문서만으로 개인 규칙을 확정하지 않았다.
-
-기본 Codex sessions 디렉터리의 JSONL 223개에서 관련 사용자 메시지 후보를
-검색했다. 자동 평가 prompt, 재개 요약, 복제된 대화, 환경 지침을 새로운
-독립 사용자 결정으로 세지 않았다. 선택한 요청은 role=user 원문과 주변
-assistant 답변을 필요한 범위에서 읽었다. 다른 계정·삭제·미동기화 기록과
-모든 대화 전체를 정독한 것은 아니다. assistant 제안만 있고 사용자 채택이
-없는 내용은 확정 결정으로 올리지 않았다.
-
-모든 저장소의 전수 코드 분석·정량 스타일 분석은 수행하지 않았다. 37개
-규칙은 현재 요청을 우선한 근거별 편집 결과이며 각 규칙의 증거 강도와 범위는
-[사전 상태](dictionary.md)에 표시했다. 과거 코드의 오래된 API·명백한
-문제·샘플은 표기 관측에만 사용했다.
+[추가 사용자 결정](history-evidence.md)과 [언어별 근거](language-evidence.md)를
+함께 읽는다. 전체 목록·내용 검색은 전수 범위를 명시하지만 모든 행의 수동
+정독·모든 과거 revision 분석을 뜻하지 않는다. Git author·소유·non-fork만으로
+직접 작성이나 개인 선호를 확정하지 않는다. 외부 예제·agent 생성·공동 작업·
+이관 자료를 구분했다. 71개 규칙은 현재 요청과 같은 범위의 최신 명시 결정을
+우선한 편집 결과다. 미확정·반복 번복은 [결정 기록](decisions.md)에 남겼다.
 
 ## 현재 요청과 실제 대화
 
@@ -154,17 +142,17 @@ prompt·동작과 분리하도록 요청했다. 교정에 대한 assistant 수�
 - UTC: `2026-09-21T07:10:06.589Z`
 - Session: `01a0c271-61e5-7d00-ad71-790b24e3d190`
 - Record:
-  `rollout-2026-09-21T15-17-09-01a0c271-61e5-7d00-ad71-790b24e3d190_01a0c29c-78a0-71e3-8264-784fccb8633f.jsonl`
+`rollout-2026-09-21T15-17-09-01a0c271-61e5-7d00-ad71-790b24e3d190_01a0c29c-78a0-71e3-8264-784fccb8633f.jsonl`
   / line 427
 - UTC: `2026-09-21T07:33:41.314Z`
 - Session: `01a0c271-61e5-7d00-ad71-790b24e3d190`
 - Record:
-  `rollout-2026-09-21T15-17-09-01a0c271-61e5-7d00-ad71-790b24e3d190_01a0c29c-78a0-71e3-8264-784fccb8633f.jsonl`
+`rollout-2026-09-21T15-17-09-01a0c271-61e5-7d00-ad71-790b24e3d190_01a0c29c-78a0-71e3-8264-784fccb8633f.jsonl`
   / line 554
 - UTC: `2026-09-21T08:38:13.162Z`
 - Session: `01a0c271-61e5-7d00-ad71-790b24e3d190`
 - Record:
-  `rollout-2026-09-21T15-17-09-01a0c271-61e5-7d00-ad71-790b24e3d190_01a0c29c-78a0-71e3-8264-784fccb8633f.jsonl`
+`rollout-2026-09-21T15-17-09-01a0c271-61e5-7d00-ad71-790b24e3d190_01a0c29c-78a0-71e3-8264-784fccb8633f.jsonl`
   / line 765
 
 <a id="u09"></a>
@@ -176,7 +164,7 @@ UI framework를 구현계획에 넣기 전에 호환성 검증을 요청했다. 
 - UTC: `2026-09-21T15:59:37.436Z`
 - Session: `01a0c271-61e5-7d00-ad71-790b24e3d190`
 - Record:
-  `rollout-2026-09-21T15-17-09-01a0c271-61e5-7d00-ad71-790b24e3d190_01a0c29c-78a0-71e3-8264-784fccb8633f.jsonl`
+`rollout-2026-09-21T15-17-09-01a0c271-61e5-7d00-ad71-790b24e3d190_01a0c29c-78a0-71e3-8264-784fccb8633f.jsonl`
   / line 2223
 
 <a id="u10"></a>
@@ -282,7 +270,7 @@ SHA-256은 읽은 파일의 식별용이며 원문을 복원하거나 접근 권
 추천은 변동성이 크고 코드 스타일이 아니므로 이 사전에 복제하지 않았다.
 
 - 경로:
-  `agent-skills-model-recommendations/library/instructions/software-engineering.md`
+`agent-skills-model-recommendations/library/instructions/software-engineering.md`
 - HEAD: `b1f1122275b45179cbb6cd69c16d9dd8399d55a4`
 - SHA-256: `597ae1c32b8a7b3a3668370b62b6f9f3ae8631946b8c58480873768ed9253dea`
 - 파일 상태: 해당 파일은 HEAD와 동일
@@ -342,7 +330,7 @@ ancestor·common ancestor·merge base를 다른 의미로 유지하는 활성 �
 자료로 재확인했다.
 
 - 경로:
-  `agent-skills-model-recommendations/terminology/glossary/software-engineering.yaml`
+`agent-skills-model-recommendations/terminology/glossary/software-engineering.yaml`
 - HEAD: `b1f1122275b45179cbb6cd69c16d9dd8399d55a4`
 - SHA-256: `e2f41b8faeb347488dcd4e35ba99978ed087ceb9b35db5677b4eb3a016b74dec`
 - 파일 상태: 해당 파일은 HEAD와 동일

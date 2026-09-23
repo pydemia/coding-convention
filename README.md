@@ -1,16 +1,18 @@
 # pydemia coding convention
 
 pydemia의 명시적 요청, 직접 관리한 코드·문서, Codex 설계 대화를 근거로
-정리한 convention 사전이다. Python을 중심으로 서식과 구조·상태·검증
-선택을 다루며 각 규칙의 적용 범위와 예외를 기록한다.
+정리한 convention 사전이다. Python·YAML·Markdown·Java·Kotlin을 별도로
+관리하며 서식과 구조·상태·검증의 적용 범위, 근거, 예외를 기록한다. 동일
+범위의 충돌은 최신 명시적 결정을 우선한다.
 
-- [37개 항목 사전](skills/pydemia-coding-style/references/dictionary.md)
+- [71개 항목 사전](skills/pydemia-coding-style/references/dictionary.md)
 - [Agent Skill](skills/pydemia-coding-style/SKILL.md)
 - [근거와 조사 범위](skills/pydemia-coding-style/references/evidence.md)
 - [충돌·선택 이유·미확정 항목](skills/pydemia-coding-style/references/decisions.md)
 - [도구 설정과 formatter 한계](docs/tooling.md)
 - [skills.pydemia.ai 편입 안내](docs/publication.md)
 - [검증 기록](docs/validation.md)
+- [전수 목록·내용 검사 범위](docs/research-coverage.md)
 
 79자·공백 4칸·LF·UTF-8·큰따옴표와 사용자가 제시한 Python 줄바꿈을
 개인 기본값으로 삼는다. 기존 프로젝트의 설정과 충돌하면 현재 작업의

@@ -43,6 +43,78 @@ unipy의 wildcard import·주석 처리된 구현, 오래된 batcher의 광범�
 [G06](evidence.md#g06), [L01](evidence.md#l01)
 
 Python 버전, build backend, package manager, Ruff rule 전체, docstring 형식,
-TS formatter, SQL 서식, Go·Rust·Java 관례는 개인 전역 규칙으로 확정하지
+TS formatter, SQL 서식, Go·Rust·Java 세부 관례는 개인 전역 규칙으로 확정하지
 않았다. 이 저장소의 Python 3.11 검사 기준과 Ruff 설정은 사전을 실행·검증하기
 위한 선택이다. 특정 과거 프로젝트의 toolchain을 모든 저장소에 강제하지 않는다.
+
+## 최신 기준을 적용한 변경 이력
+
+이 표는 같은 범위에서 확인되는 사용자 결정을 시간순으로 비교한다. 단순한
+정책 변경과 반복 번복은 구분한다. 최신 사용자 결정이 이전 문서에 아직
+반영되지 않았다면 문서가 오래된 것이며 사용자 결정의 효력이 사라지는 것은
+아니다. 기록 시각이 이관 시점인 대화는 session 내부 순서도 함께 확인한다.
+
+| 항목·범위 | 이전 → 후속 결정 | 현재 적용 기준 | 판단 |
+|---|---|---|---|
+| 개인 기본 서식 | 과거 저장소별 88·100·120자 → 현재 요청 79자 | 새 개인 기본은 79자. 기존 프로젝트 설정은 명시적 변경 범위 확인 | 최신 개인 기준. 서로 다른 저장소 수치는 번복이 아님 |
+| 같은 context 압축 설정 | 2026-05-08 비율 0.7 → 05-11 비율 0.5와 config 지원 | 해당 설계에서는 후속 0.5. 새 제품의 전역 기본으로 고정하지 않음 | 단방향 조정 |
+| adaptive memory | 05-26 compact/window 계획 → 05-29 work-memory는 window만, context-memory는 압축 | 서로 다른 데이터 성격에 맞춘 후속 구분 | 범위 구체화 |
+| adaptive singleton 주입 | 05-26 ServiceFactory 전달 검토 → 같은 날 app.state와 router Depends 명시 | 그 요청의 수명 관리에는 후속 주입 경로 | 특정 경로의 교정. 모든 factory 폐기 아님 |
+| adaptive direct_answer | 차단 동작 교정 → 06-04 금지 백지화 → 같은 날 허용과 policy 검증 재강조 | 허용하되 근거·goal·policy 조건 검증 | 최신 결정 명확. 두 번의 허용 요청은 재확인 |
+| adaptive fallback | 06-02 필수 제어만 요구 → run_failed 외 조건 해제 재확인 | 당시 root final-result 경로의 제한 | 다른 formatter의 생성 실패 fallback과 구분 |
+| recipe | 06-04 step·policy 보강 → 06-10 recipe 제거 예정, 재사용 tool 이관 | 뒤의 이관·제거 방향 | 기능 폐기 전 재사용 범위 보존 |
+| 업무 정의 원본 | 06월 YAML 중앙화 → 09월 Markdown 문서 중심 선택·YAML 회귀 교정 | 최신 semantic-query에서는 Markdown Skill·revision | 사용자 번복보다 agent의 과거 방식 회귀가 반복된 사례 |
+| DTO | Pydantic 요청 반복, 일부 내부 dataclass·framework TypedDict 공존 | DTO·검증 경계는 Pydantic 선호. 내부 값·framework 명세는 별도 | 적용 범위 차이 |
+| formatter | 06-18 작업에서 Black 명시, 다른 프로젝트에는 Ruff 설정 | 해당 프로젝트의 최신 명시와 활성 도구를 따름 | 개인 전체의 Black↔Ruff 번복으로 해석하지 않음 |
+
+근거: [U34 시계열](history-evidence.md#u34),
+[U12 DTO](history-evidence.md#u12), [U08 원본 선택](evidence.md#u08),
+[U30 최신 기준](history-evidence.md#u30).
+
+## 반복 충돌·재결정 검토 목록
+
+보완 검색에서 config root key의 agent→agents→agent 번복을 확인했다.
+다음 표의 앞부분은 실제 되돌림·정정이며 뒤의 표는 재발한 충돌이다. 이미
+최신 결정이 명확한 항목은 그 기준으로 계속 적용하고 새 승인을 요구하지
+않는다. 개인 전역으로 확장할지 여부만 별도 판단 대상으로 남긴다.
+
+| 범위 | 결정 순서·이유 | 현재 기준 | 향후 의사결정 쟁점 |
+|---|---|---|---|
+| adaptive config root | 05-27 adaptive→agent, 6분 뒤 agents로 통합, 12분 뒤 다른 구현체명과 통일하려 agent로 복귀 | 단수 agent가 마지막 명시 결정 | 모든 설정 root에 단수를 강제할 근거는 없음. 소유 객체 하나인지 목록인지로 새 이름을 결정할지 검토 |
+| adaptive memory schema | 06-12 public 추가→제거→agent로 정정, 06-13 agentcontext로 변경하고 context 설정 위치로 이동 | 조사한 요청 중 마지막 기준은 06-13의 agentcontext | DB 이름·schema 이름·config field를 구분. 이 값을 다른 배포 환경으로 복제하지 않음 |
+| tool timeout 위치 | 05-29 config 요청→06-09 14:34 UTC tool 선언에 30초→같은 날 16:05 Field 기본값 30_000으로 통합 | 마지막 요청인 ToolSpec field 기본값, 중복 호출부 값 제거 | 운영 중 조정 가능한 override와 반복 선언을 구분. 과거 선언부 지정 요청을 최신으로 되살리지 않음 |
+
+근거: [U35 보완 시계열](history-evidence.md#u35).
+
+아래는 사용자 번복이라고 확정하지 않은 반복 충돌이다.
+
+| 항목 | 반복된 충돌·이유 | 현재 작업에 적용할 기준 | 다시 결정할 때의 선택지 |
+|---|---|---|---|
+| Markdown 업무 원본과 YAML 정의 | YAML의 편집 난이도·중복 때문에 문서 원본을 선택했으나 과거 방식 제안이 재등장 | Markdown 원본, 생성 결과는 파생물 | 운영자가 YAML을 다시 직접 관리할지. 재선택 요청 전에는 변경하지 않음 |
+| prompt 제어와 코드 검증 | 업무 해석의 과한 차단·정규식은 제거 요청, 실행·권한은 서버 증거 요구 | 의미 해석과 신뢰 경계를 구분 | 새 기능의 판정이 언어 해석인지 권한·실행 검증인지 먼저 결정 |
+| 평탄화와 하위 module | 지나친 분리는 추적을 어렵게 하고 구현이 많은 단일 module도 읽기 어려움 | 책임·실제 의존성에 맞춰 배치 | 새 module의 독립 책임·확장 지점·테스트 필요성을 비교 |
+| 수직 chain과 formatter | 사용자의 수직 표현을 자동 formatter가 합침 | 명시적 모양과 기존 도구 충돌을 알리고 최소 범위 예외 적용 | chain 형태를 우선할지 formatter 표준화를 우선할지 마이그레이션 범위에서 선택 |
+| Java·Kotlin의 언어별 세부 | 직접 작성 표본과 설계 예제는 있으나 brace·scope function 등의 전역 정책 근거 부족 | 확인된 관측과 공통 기준만 적용 | 특정 프로젝트에서 실제 예제로 선택한 뒤 개인 사전으로 승격 |
+
+수치 기본값·provider·model·DB schema·UI 기본 배치 등은 해당 프로젝트의
+시점별 결정이다. 최신이라는 이유만으로 다른 저장소의 기본값까지 바꾸지 않는다.
+
+## 실제 선택 응답과 그때 제시된 이유
+
+선택지는 assistant가 제시한 이유와 사용자가 고른 값을 구분한다. 사용자가
+추천 옵션을 선택했다고 해서 그 설명의 모든 기술적 주장을 사용자가 직접
+말했거나 이번 조사에서 다시 검증한 것으로 보지 않는다.
+
+| 시점·범위 | 확인된 사용자 선택 | 선택지에 제시됐던 이유 | 개인 정책에 반영한 범위 |
+|---|---|---|---|
+| 2026-05-13 agent 이관 설계 | Supervisor Tool | root가 권한·goal을 소유하는 기존 구조 유지 | 상태 소유와 책임을 비교하는 사례. 모든 agent의 고정 패턴 아님 |
+| 같은 설계 | SSE over POST | token·event·interrupt 전송과 HTTP streaming 요구 | 실제 인터페이스 요구에 맞춘 선택. WebSocket 금지 아님 |
+| 같은 설계 | Postgres | resume·audit·다중 worker의 상태 저장 | persistence 요구에 맞춘 선택. 모든 prototype에 DB 강제 안 함 |
+| 2026-09-09 리뷰 분석 | 병렬 분석 4개로 시작 | assistant 제안은 2개, 사용자 답변은 4개 | assistant 추천을 확정값으로 사용하면 안 된다는 사례 |
+| 2026-09-10 모델 선택 점검 | 터미널 TUI | 질문으로 문제가 발생하는 화면을 확인 | 실제 사용한 입력 경로에서 실행 설정을 검증 |
+| 2026-09-21 개인 Skill hub | 설명·예시 중심 Markdown 또는 문서 | 현재 관리 형식을 묻는 질문에 직접 답변 | 문서 중심 원본을 선택한 명시 근거 |
+
+동기 선택 응답은 session `019e2026-7b64-7933-b31b-415d0227487a`의
+JSONL line 94에서 확인했다. 비동기 응답은 사용자 메시지 안의 실제 `answer`
+값을 읽었다. tool의 `accepted: true`는 질문 전달 성공이므로 사용자의 승인이나
+선택으로 세지 않았다. 빈 `answers`에도 확정 선택을 부여하지 않았다.

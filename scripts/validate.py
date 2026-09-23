@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import ast
+import os
 import re
 import sys
 import tomllib
@@ -81,9 +82,13 @@ def validate(root: Path) -> list[str]:
     root = root.resolve()
     errors: list[str] = []
     documents: dict[Path, str] = {}
-    ignored = {".git", ".venv", ".ruff_cache", "__pycache__"}
-    for path in sorted(root.rglob("*")):
-        if not path.is_file() or ignored.intersection(path.parts):
+    ignored = {".git", ".venv", ".ruff_cache", "__pycache__", "repos"}
+    paths: list[Path] = []
+    for directory, folders, names in os.walk(root):
+        folders[:] = sorted(name for name in folders if name not in ignored)
+        paths.extend(Path(directory) / name for name in sorted(names))
+    for path in paths:
+        if not path.is_file():
             continue
         relative = path.relative_to(root)
         raw = path.read_bytes()
@@ -112,7 +117,8 @@ def validate(root: Path) -> list[str]:
 
     references = root / "skills/pydemia-coding-style/references"
     entries: list[str] = []
-    for name in ("python.md", "design.md", "workflow.md", "languages.md"):
+    for path in sorted(references.glob("*.md")):
+        name = path.name
         text = documents.get(references / name, "")
         sections = re.split(r"^## ([A-Z]+-\d{3}) — ", text, flags=re.MULTILINE)
         for index in range(1, len(sections), 2):
