@@ -7,7 +7,6 @@
 |---|---|---|---|
 | 79·100·120자 | 현재 요청·개인 지침은 79, 최근 Python은 100, 과거 backend는 120 | 개인 기본은 79. 기존 설정은 별도 마이그레이션 요청 전까지 보존 | [U00](evidence.md#u00), [L01](evidence.md#l01), [L03](evidence.md#l03), [G04](evidence.md#g04) |
 | 괄호 들여쓰기 | 오래된 batcher는 선언 인자·닫는 괄호 정렬이 현재 예제와 다름 | 현재 사용자가 준 형태를 채택. 예전 파일을 정답 예제로 복사하지 않음 | [U00](evidence.md#u00), [G01](evidence.md#g01) |
-| method chain | Ruff 0.16.8 기본 formatter가 수직 chain을 한 줄로 합침 | 사전 예제는 수직형 유지. lint와 format을 구분하고 최소 범위 suppression 또는 기존 formatter 우선 적용 | [T01](evidence.md#t01) |
 | quote | unipy의 작은따옴표와 최근 큰따옴표 혼재 | 큰따옴표 중심, escape·외부 문법 예외. TS로 일괄 확장하지 않음 | [U00](evidence.md#u00), [G03](evidence.md#g03), [G05](evidence.md#g05) |
 | 절대·상대 import | 공개 package와 내부 module에서 둘 다 사용 | 공개 접근은 절대, 내부 캡슐화는 상대. 패키징과 상대 import는 양립 | [U00](evidence.md#u00), [G01](evidence.md#g01), [G02](evidence.md#g02) |
 | Pydantic·dataclass | Pydantic 요청과 IAM의 frozen dataclass가 공존 | 입력 검증·DTO는 Pydantic 선호. 내부 값까지 전환하지 않음 | [U05](evidence.md#u05), [G04](evidence.md#g04) |
@@ -42,10 +41,12 @@ unipy의 wildcard import·주석 처리된 구현, 오래된 batcher의 광범�
 않았다. [G01](evidence.md#g01), [G03](evidence.md#g03),
 [G06](evidence.md#g06), [L01](evidence.md#l01)
 
-Python 버전, build backend, package manager, Ruff rule 전체, docstring 형식,
+Python 버전, build backend, package manager, docstring 형식,
 TS formatter, SQL 서식, Go·Rust·Java 세부 관례는 개인 전역 규칙으로 확정하지
-않았다. 이 저장소의 Python 3.11 검사 기준과 Ruff 설정은 사전을 실행·검증하기
-위한 선택이다. 특정 과거 프로젝트의 toolchain을 모든 저장소에 강제하지 않는다.
+않았다. 이 저장소의 Python 3.11 검사 기준은 사전을 실행·검증하기 위한
+선택이다. 특정 과거 프로젝트의 toolchain을 모든 저장소에 강제하지 않는다.
+2026-09-23 사용자 결정에 따라 포맷터 선택은 프로젝트에 맡기고 특정 포맷터의
+설정·검증 명령·출력 비교는 사전에서 제외한다.
 
 ## 최신 기준을 적용한 변경 이력
 
@@ -65,7 +66,6 @@ TS formatter, SQL 서식, Go·Rust·Java 세부 관례는 개인 전역 규칙�
 | recipe | 06-04 step·policy 보강 → 06-10 recipe 제거 예정, 재사용 tool 이관 | 뒤의 이관·제거 방향 | 기능 폐기 전 재사용 범위 보존 |
 | 업무 정의 원본 | 06월 YAML 중앙화 → 09월 Markdown 문서 중심 선택·YAML 회귀 교정 | 최신 semantic-query에서는 Markdown Skill·revision | 사용자 번복보다 agent의 과거 방식 회귀가 반복된 사례 |
 | DTO | Pydantic 요청 반복, 일부 내부 dataclass·framework TypedDict 공존 | DTO·검증 경계는 Pydantic 선호. 내부 값·framework 명세는 별도 | 적용 범위 차이 |
-| formatter | 06-18 작업에서 Black 명시, 다른 프로젝트에는 Ruff 설정 | 해당 프로젝트의 최신 명시와 활성 도구를 따름 | 개인 전체의 Black↔Ruff 번복으로 해석하지 않음 |
 
 근거: [U34 시계열](history-evidence.md#u34),
 [U12 DTO](history-evidence.md#u12), [U08 원본 선택](evidence.md#u08),
@@ -93,7 +93,6 @@ TS formatter, SQL 서식, Go·Rust·Java 세부 관례는 개인 전역 규칙�
 | Markdown 업무 원본과 YAML 정의 | YAML의 편집 난이도·중복 때문에 문서 원본을 선택했으나 과거 방식 제안이 재등장 | Markdown 원본, 생성 결과는 파생물 | 운영자가 YAML을 다시 직접 관리할지. 재선택 요청 전에는 변경하지 않음 |
 | prompt 제어와 코드 검증 | 업무 해석의 과한 차단·정규식은 제거 요청, 실행·권한은 서버 증거 요구 | 의미 해석과 신뢰 경계를 구분 | 새 기능의 판정이 언어 해석인지 권한·실행 검증인지 먼저 결정 |
 | 평탄화와 하위 module | 지나친 분리는 추적을 어렵게 하고 구현이 많은 단일 module도 읽기 어려움 | 책임·실제 의존성에 맞춰 배치 | 새 module의 독립 책임·확장 지점·테스트 필요성을 비교 |
-| 수직 chain과 formatter | 사용자의 수직 표현을 자동 formatter가 합침 | 명시적 모양과 기존 도구 충돌을 알리고 최소 범위 예외 적용 | chain 형태를 우선할지 formatter 표준화를 우선할지 마이그레이션 범위에서 선택 |
 | Java·Kotlin의 언어별 세부 | 직접 작성 표본과 설계 예제는 있으나 brace·scope function 등의 전역 정책 근거 부족 | 확인된 관측과 공통 기준만 적용 | 특정 프로젝트에서 실제 예제로 선택한 뒤 개인 사전으로 승격 |
 
 수치 기본값·provider·model·DB schema·UI 기본 배치 등은 해당 프로젝트의

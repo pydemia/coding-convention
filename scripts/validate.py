@@ -82,10 +82,14 @@ def validate(root: Path) -> list[str]:
     root = root.resolve()
     errors: list[str] = []
     documents: dict[Path, str] = {}
-    ignored = {".git", ".venv", ".ruff_cache", "__pycache__", "repos"}
+    ignored = {".git", ".venv", "__pycache__", "repos"}
     paths: list[Path] = []
     for directory, folders, names in os.walk(root):
-        folders[:] = sorted(name for name in folders if name not in ignored)
+        folders[:] = sorted(
+            name for name in folders
+            if name not in ignored
+            and not (name.startswith(".") and name.endswith("_cache"))
+        )
         paths.extend(Path(directory) / name for name in sorted(names))
     for path in paths:
         if not path.is_file():

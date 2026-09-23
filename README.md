@@ -9,7 +9,7 @@ pydemia의 명시적 요청, 직접 관리한 코드·문서, Codex 설계 대�
 - [Agent Skill](skills/pydemia-coding-style/SKILL.md)
 - [근거와 조사 범위](skills/pydemia-coding-style/references/evidence.md)
 - [충돌·선택 이유·미확정 항목](skills/pydemia-coding-style/references/decisions.md)
-- [도구 설정과 formatter 한계](docs/tooling.md)
+- [편집 설정과 검증](docs/tooling.md)
 - [skills.pydemia.ai 편입 안내](docs/publication.md)
 - [검증 기록](docs/validation.md)
 - [전수 목록·내용 검사 범위](docs/research-coverage.md)
@@ -36,11 +36,10 @@ pydemia-coding-style을 적용해 이 Python 모듈을 수정해 주세요.
 
 ## 검증
 
-Python 3.11 이상에서 실행한다. Ruff는 아래 버전으로 검증했다.
+Python 3.11 이상에서 실행한다.
 
 ```bash
 uv run --python 3.13 scripts/validate.py
-uvx ruff==0.16.8 check .
 uv run --python 3.13 examples/python_style.py
 ```
 

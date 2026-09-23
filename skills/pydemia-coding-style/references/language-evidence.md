@@ -42,7 +42,7 @@ Kotlin scope function·coroutine dispatcher 정책은 확정할 근거가 부족
 검색의 숫자는 개인 규칙의 투표 수가 아니다. vendor·tutorial·worktree와
 생성물의 비중이 커 직접 요청과 소유 경계를 함께 판단했다.
 
-- 최근 Python 설정에는 79·88·100·120자와 Black·Ruff가 공존한다.
+- 최근 Python 설정에는 79·88·100·120자 줄 길이가 공존한다.
 - Pydantic model·Settings, NumPy·Google docstring, 절대·상대 import가
   함께 존재한다. 기존 지역 관례를 단일 도구로 정규화하지 않는다.
 - Markdown에는 설계 원본·생성 Skill·책 문서·이관 자료가 섞여 있다.

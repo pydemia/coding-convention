@@ -1,6 +1,6 @@
 __pycache__/
 *.py[cod]
-.ruff_cache/
+.*_cache/
 .venv/
 .DS_Store
 /repos/

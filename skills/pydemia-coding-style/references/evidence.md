@@ -290,7 +290,8 @@ SHA-256은 읽은 파일의 식별용이며 원문을 복원하거나 접근 권
 
 ### L03 — template-backend
 
-과거 backend의 Ruff 설정. 해당 설정 추가 commit 5e967b2의 author는 Youngju Kim이다. 현재 파일에는
+과거 backend의 Python 서식 설정. 해당 설정 추가 commit 5e967b2의 author는
+Youngju Kim이다. 현재 파일에는
 미커밋 변경이 있으므로 HEAD와 동일한 원문이라고 주장하지 않는다. 공백 4칸·큰따옴표·120자·auto 개행을 확인했다.
 
 - 경로: `template-backend/pyproject.toml`
@@ -314,7 +315,7 @@ agent-skills가 404여서 원격 공개 검증을 하지 못했다.
 
 ### L05 — semantic-query
 
-Python 100자·mypy strict·Ruff 선택과 optional extras를 확인했다. 현재 프로젝트 설정이며 개인 전체의
+Python 100자·mypy strict·optional extras를 확인했다. 현재 프로젝트 설정이며 개인 전체의
 toolchain으로 일반화하지 않았다.
 
 - 경로: `semantic-query/pyproject.toml`
@@ -353,15 +354,3 @@ CLI 파일 일부는 다른 author의 변경이어서 pydemia 고유 서식의 �
 채택하지 않았다. git-code-reviewer는 로컬과 원격 HEAD가 달라 해당 코드를
 고정된 공개 근거로 사용하지 않았다. GitHub non-fork 여부만으로 원작성자를
 확정하지 않는 이유다.
-
-<a id="t01"></a>
-
-## T01 — 도구의 실제 출력
-
-Ruff 0.16.8에서 현재 사용자 chain 예제를 임시 Python 파일로 작성하고
-`ruff format --diff --line-length 79`와 lint를 실행했다. format은 수직형을
-한 줄로 합쳤고 lint는 통과했다. 이 결과를 FMT-005와 도구 안내에 반영했다.
-formatter의 suppression 방식은 [공식 문서]로 확인했다. 다른 버전과 모든
-preview 옵션의 동작을 전수 검증한 것은 아니다.
-
-[공식 문서]: https://docs.astral.sh/ruff/formatter/#format-suppression

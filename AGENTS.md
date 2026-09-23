@@ -12,9 +12,8 @@ assistant의 제안, Git author, fork 소유만으로 개인의 확정 취향을
 않는다. 기존 공개 심볼과 사용자의 다른 checkout을 수정하지 않는다.
 
 Python과 일반 문장은 79자, 공백 4칸, LF, UTF-8을 사용한다. URL·표·분리할 수
-없는 식별자는 예외다. `ruff format`은 수직 chain을 바꾸므로 자동 실행하지
-않는다. 필요하면 `docs/tooling.md`를 먼저 읽는다.
+없는 식별자는 예외다. 도구 설정은 `docs/tooling.md`를 따른다.
 
-검증은 `uv run --python 3.13 scripts/validate.py`, `uvx ruff==0.16.8 check .`,
+검증은 `uv run --python 3.13 scripts/validate.py`,
 `uv run --python 3.13 examples/python_style.py`, `git diff --check`를 사용한다.
 현재 사전·예제 검사와 다른 agent에서의 실제 행동 검증은 구분해 보고한다.
