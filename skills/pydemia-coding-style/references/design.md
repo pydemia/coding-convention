@@ -1,0 +1,197 @@
+# 구조·상태·의존성
+
+[사전 색인](dictionary.md) · [근거](evidence.md) · [충돌과 결정](decisions.md)
+
+<a id="design-001"></a>
+
+## DESIGN-001 — 추적 가능한 실행 흐름
+
+- 상태: 명시
+- 적용 범위: 구조·제어 흐름·의존 관계
+- 근거: [U01](evidence.md#u01) · [U00](evidence.md#u00) · [L01](evidence.md#l01)
+
+값의 출처, 변경 주체, 분기 이유, 오류 위치를 코드를 따라 확인할 수 있게 작성한다. 중요한 동작을 불필요한
+callback·registry·decorator·전역 가변 상태로 숨기지 않는다.
+
+**이유:** 간결한 interface와 일목요연한 factory 흐름을 반복 요청했다. 디버깅과 코드 탐색이 설계 선택 기준이다.
+
+**예외·한계:** 프레임워크의 callback이나 decorator 자체를 금지하지 않는다. 실제 진입점과 호출 대상이 드러나는지를
+판단한다.
+
+<a id="design-002"></a>
+
+## DESIGN-002 — mixin 회피와 composition
+
+- 상태: 명시
+- 적용 범위: 동작 재사용과 클래스 설계
+- 근거: [U00](evidence.md#u00) · [U01](evidence.md#u01) · [L01](evidence.md#l01)
+
+mixin과 깊은 다중 상속은 기본 선택에서 제외한다. 재사용은 직접 호출과 composition을 먼저 검토한다. 동작이 어느 구현에서
+오는지 IDE에서 따라갈 수 있게 한다.
+
+**이유:** 사용자가 debugging과 language server의 의존성 탐색 어려움을 이유로 명시했다.
+
+**예외·한계:** 명확한 확장 인터페이스·프레임워크 base class까지 금지하지 않는다. 상속이 실제 extension point를
+제공하는 경우 좁은 계층과 명시적 메서드를 유지한다.
+
+<a id="design-003"></a>
+
+## DESIGN-003 — 필요가 확인된 추상화
+
+- 상태: 명시
+- 적용 범위: class·Protocol·factory·wrapper·공통 module
+- 근거: [U01](evidence.md#u01) · [L01](evidence.md#l01) · [G04](evidence.md#g04)
+
+중복 제거, 책임 분리, 실제 확장 지점, 의존성 격리, 독립 테스트 중 구체적인 필요가 있을 때 추상화를 추가한다. 읽기 쉬운 직접 구현으로
+충분하면 그대로 둔다.
+
+**이유:** 공통 interface를 요구한 기록과 불필요한 추상화를 제한한 지침을 함께 반영한다. 두 기준은 역할과 필요를 기준으로
+양립한다.
+
+**예외·한계:** 추상화를 전부 없애거나 모든 기능에 interface를 붙이는 규칙으로 해석하지 않는다. 함수 20줄 제한은 현재 강제
+규칙이 아니다. 의미 있는 책임을 추출한다.
+
+<a id="design-004"></a>
+
+## DESIGN-004 — 책임별 모듈 경계
+
+- 상태: 선호
+- 적용 범위: library·service·UI·adapter
+- 근거: [U01](evidence.md#u01) · [G04](evidence.md#g04) · [G05](evidence.md#g05)
+  · [L02](evidence.md#l02)
+
+함께 바뀌는 책임을 가까이 두고 외부 시스템 호출은 경계에 모은다. UI가 backend와 다른 업무 규칙을 복제하지 않게 한다. 소비자가
+쓰지 않는 메서드를 거대한 interface에 묶지 않는다.
+
+**이유:** 높은 응집도·낮은 결합도 요청, IAM의 port, TaskLens의 pure grouping과 VS Code 경계에서
+반복된다.
+
+**예외·한계:** 폴더 이름이나 계층 개수를 통일하기 위해 service·repository를 기계적으로 만들지 않는다. 작고 단일 목적의
+도구는 단순한 구조를 유지한다.
+
+<a id="design-005"></a>
+
+## DESIGN-005 — 수명과 상태의 단일 소유자
+
+- 상태: 선호
+- 적용 범위: runtime·connection·checkpoint·구독·공유 조회
+- 근거: [U06](evidence.md#u06) · [G05](evidence.md#g05) · [L02](evidence.md#l02)
+
+외부 자원과 공유 상태를 누가 만들고 종료하는지 명시한다. 이미 존재하는 runtime의 memory·checkpoint를 다른 계층에서 중복
+생성하지 않는다. 여러 화면이 같은 목록을 쓰면 공통 snapshot과 진행 중 요청을 공유할 필요가 있는지 검토한다.
+
+**이유:** 중복 checkpoint 제거 요청과 TaskLens의 공유 catalog가 같은 종류의 중복 소유 문제를 다룬다.
+
+**예외·한계:** 프로세스 전역 singleton을 만들라는 뜻이 아니다. 요청·실행·tenant 간 상태 격리와 소유 기간을 보존한다.
+
+<a id="design-006"></a>
+
+## DESIGN-006 — 문자열로 복제한 구현 정보
+
+- 상태: 선호
+- 적용 범위: 내부 tracing·logging·catalog metadata
+- 근거: [U04](evidence.md#u04) · [L01](evidence.md#l01)
+
+함수 이름처럼 이미 코드에 있는 정보를 문자열로 다시 적고 수동 동기화하지 않는다. 구현 참조에서 이름을 얻을 수 있는지 검토한다. 로그에는
+동작을 진단하는 식별자와 단계가 드러나게 한다.
+
+**이유:** 함수명을 바꿀 때 tracing 문자열까지 수정해야 하는 구조를 사용자가 유지보수 문제로 지적했다.
+
+**예외·한계:** 외부 API·저장된 event·dashboard에서 사용하는 안정 ID는 함수명 변경에 따라 자동 변경하지 않는다. 내부
+이름과 호환성 ID를 구분한다. 비밀값과 전체 요청 원문을 진단용으로 무조건 기록하지 않는다.
+
+<a id="design-007"></a>
+
+## DESIGN-007 — 의존성 도입의 판단 기준
+
+- 상태: 선호
+- 적용 범위: 새 package·framework·외부 service
+- 근거: [U07](evidence.md#u07) · [U09](evidence.md#u09) · [L01](evidence.md#l01)
+
+현재 기능과 비교해 새 의존성이 해결하는 문제, 배포·운영 비용, 실패 경계, 기존 호스트와의 호환성을 확인한다. 호환성을 채택 이유로 삼으면
+실제 사용 환경에서 확인할 항목을 정한다.
+
+**이유:** 별도 인가 엔진을 추가하는 이득을 질문한 뒤 구조를 선택했고, UI framework는 구현계획에 넣기 전 호환 검증을
+요청했다.
+
+**예외·한계:** 특정 IAM 제품·UI framework·Python 버전을 모든 프로젝트의 개인 표준으로 고정하지 않는다. 새 의존성
+금지 규칙도 아니다.
+
+<a id="design-008"></a>
+
+## DESIGN-008 — 관리 원본과 생성 결과
+
+- 상태: 조건부
+- 적용 범위: 문서 기반 Skill·규칙·생성 artifact 관리
+- 근거: [U08](evidence.md#u08) · [L04](evidence.md#l04) · [L02](evidence.md#l02)
+
+사람이 편집하는 원본을 명확히 정한다. Markdown 원본에서 생성한 SQL·JSON·export를 별도의 수작업 관리 원본으로 늘리지
+않는다. 재현에 필요한 생성 결과와 입력 revision은 실행 기록으로 보존한다.
+
+**이유:** 업무조건 YAML 정의를 관리하기 어렵다는 교정과 SQL·선택 이유를 기록하라는 요청에 근거한다.
+
+**예외·한계:** 일반 설정에 YAML·JSON을 쓰지 말라는 뜻이 아니다. package.json, CI YAML, 내부 typed
+plan은 목적에 맞게 사용한다.
+
+<a id="state-001"></a>
+
+## STATE-001 — 다른 상태는 다른 값으로
+
+- 상태: 명시
+- 적용 범위: 조회·작업 실행·검증 상태
+- 근거: [L01](evidence.md#l01) · [G05](evidence.md#g05) · [L02](evidence.md#l02)
+
+생략, 없음, 빈 값, invalid, unsupported, unknown, 의존성 실패를 의미에 맞게 구분한다. 성공을 확인하지 못한
+상태를 False·빈 결과·성공으로 대체하지 않는다. 중단 요청과 실제 종료도 구분한다.
+
+**이유:** 개인 개발 지침의 상태 구분 원칙과 TaskLens의 succeeded·failed·stopped·ended 구분에 근거한다.
+
+**예외·한계:** 모든 함수에 동일한 상태 enum을 넣을 필요는 없다. 실제 소비자가 구분해야 하는 상태만 명세에 둔다.
+
+<a id="state-002"></a>
+
+## STATE-002 — 오류의 원인과 의미 보존
+
+- 상태: 명시
+- 적용 범위: 예외·fallback·retry
+- 근거: [L01](evidence.md#l01) · [G01](evidence.md#g01) · [G05](evidence.md#g05)
+
+처리 가능한 실패만 잡고 오류 원인과 유용한 문맥을 전달한다. 실패를 성공처럼 보이는 기본값으로 삼키지 않는다. retry·polling은
+종료 조건을 갖고 취소를 고려한다.
+
+**이유:** 기존 개발 지침의 오류 원칙이다. 과거 코드의 광범위한 except 후 return을 현재 권장 패턴으로 삼지 않는다.
+
+**예외·한계:** 최상위 경계에서 오류를 응답으로 바꾸는 것은 가능하다. 그때도 실패 상태와 원인을 보존하고, fallback을 제공하면
+적용 조건을 명시한다.
+
+<a id="state-003"></a>
+
+## STATE-003 — 비동기 결과의 소유권
+
+- 상태: 관측
+- 적용 범위: 동시 실행·재시도·reload가 있는 UI 또는 runtime
+- 근거: [G05](evidence.md#g05) · [L02](evidence.md#l02)
+
+실행별 ID·객체 identity·generation 등으로 결과 소유자를 구분한다. 오래된 요청의 완료나 종료 이벤트가 새 실행의 상태를
+덮어쓰지 않게 한다. loading은 성공·오류·취소 경로 모두에서 해제한다.
+
+**이유:** TaskLens의 실제 실행 registry와 catalog에서 확인했다. 특정 버그 수정에서 재사용할 수 있는 조건부 설계
+기준이다.
+
+**예외·한계:** 동시성이 없는 코드에 generation·lock·cache를 추가하지 않는다. 상태 저장 방식은 저장소에 맞춘다.
+
+<a id="state-004"></a>
+
+## STATE-004 — 완료 판정의 근거
+
+- 상태: 조건부
+- 적용 범위: LLM 결과·게시·권한·DB 실행
+- 근거: [L02](evidence.md#l02) · [U08](evidence.md#u08)
+
+LLM의 설명과 브라우저의 성공 flag를 권한·검증·실행 완료의 근거로 삼지 않는다. 서버의 검증된 상태와 실제 실행 결과로 판정한다.
+preview·truncated 결과를 전체 결과 일치로 표시하지 않는다.
+
+**이유:** 최근 데이터 조회 라이브러리에서 생성·검증·실행을 구분한 지침이다. 생성된 설명과 검증 증거를 섞지 않기 위한 기준이다.
+
+**예외·한계:** 모든 애플리케이션에 동일한 receipt 타입이나 SQL pipeline을 도입하지 않는다. 해당 신뢰 경계가 있는 경우에
+적용한다.
